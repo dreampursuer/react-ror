@@ -1,0 +1,31 @@
+{
+  "name": "react-ror",
+  "version": "0.0.1",
+  "description": "Write react code in a rails-like way",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dreampursuer/react-ror"
+  },
+  "author": "Jien Yu <yu_jien@126.com>",
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "@remix-run/router": "1.2.1"
+  },
+  "devDependencies": {
+    "react-router-dom": "^6.6.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.8"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
