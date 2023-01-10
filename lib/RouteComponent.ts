@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {urlMapping} from "./conf/UrlMapping";
+import {ControllerMappingType} from "./UrlMappings";
 
 function isInstanced(obj: any) {
     const type: string = typeof obj
@@ -9,7 +9,11 @@ function isInstanced(obj: any) {
     return false;
 }
 
-export function RouteComponent() {
+interface RouteComponentProps {
+    controllerMapping: ControllerMappingType
+}
+
+export function RouteComponent({controllerMapping}: RouteComponentProps) {
     const params = useParams();
     let controllerName = params.controller;
     if (!controllerName){
@@ -19,10 +23,11 @@ export function RouteComponent() {
     if (!actionName){
         actionName = "index";
     }
-    let controller = urlMapping[controllerName];
+
+    let controller = controllerMapping[controllerName];
     if (!isInstanced(controller)){
         controller = Reflect.construct(controller, [])
-        urlMapping[controllerName] = controller
+        controllerMapping[controllerName] = controller
     }
     const result = controller[actionName]();
 
