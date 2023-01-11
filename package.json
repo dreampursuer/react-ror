@@ -1,6 +1,6 @@
 {
   "name": "react-ror",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Write react code in a rails-like way",
   "keywords": [
     "react",
@@ -18,7 +18,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@types/node": "^18.11.18"
+    "@types/node": "^18.11.18",
+    "react-router-dom": "^6.6.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
