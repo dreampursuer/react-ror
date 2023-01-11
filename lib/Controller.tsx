@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
-import {ControllerMappingType} from "./UrlMappings";
-import {ErrorElement, ErrorElementType} from "./ErrorElement";
+import {ControllerMappingType} from "./ReactRorApp";
+import {ErrorPage, ErrorPageType} from "./ErrorPage";
 import * as React from "react";
 
 
@@ -12,12 +12,12 @@ function isInstanced(obj: any) {
     return false;
 }
 
-interface RouteComponentProps {
+interface ControllerProps {
     controllerMapping: ControllerMappingType
-    onError?: ErrorElementType
+    onError?: ErrorPageType
 }
 
-export function RouteComponent({controllerMapping, onError}: RouteComponentProps) {
+export function Controller({controllerMapping, onError}: ControllerProps) {
     const params = useParams();
     let controllerName = params.controller;
     if (!controllerName){
@@ -34,7 +34,7 @@ export function RouteComponent({controllerMapping, onError}: RouteComponentProps
         if (onError){
             return onError(msg)
         }
-        return <ErrorElement msg={msg} />
+        return <ErrorPage msg={msg} />
     }
     if (!isInstanced(controller)){
         controller = Reflect.construct(controller, [])
@@ -47,7 +47,7 @@ export function RouteComponent({controllerMapping, onError}: RouteComponentProps
         if (onError){
             return onError(msg)
         }
-        return <ErrorElement msg={msg}/>
+        return <ErrorPage msg={msg}/>
     }
     return action();
 }

@@ -1,5 +1,5 @@
-import UrlMappings from "./lib/UrlMappings";
+import ReactRorApp from "./lib/ReactRorApp";
 
 export {
-    UrlMappings
+    ReactRorApp
 }

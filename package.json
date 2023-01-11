@@ -1,6 +1,6 @@
 {
   "name": "react-ror",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Write react code in a rails-like way",
   "keywords": [
     "react",
