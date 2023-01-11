@@ -9,22 +9,22 @@ export interface ControllerMappingType{
 
 interface UrlMappingsProps{
     controllerMapping: ControllerMappingType
-    errorElement?: ErrorElementType
+    onError?: ErrorElementType
 }
 
-export default function UrlMappings({controllerMapping, errorElement}: UrlMappingsProps){
+export default function UrlMappings({controllerMapping, onError}: UrlMappingsProps){
     const router = createHashRouter([
         {
             path: "/:controller/:action",
-            element: <RouteComponent controllerMapping={controllerMapping} errorElement={errorElement} />,
+            element: <RouteComponent controllerMapping={controllerMapping} onError={onError} />,
         },
         {
             path: "/:controller",
-            element: <RouteComponent controllerMapping={controllerMapping} errorElement={errorElement} />,
+            element: <RouteComponent controllerMapping={controllerMapping} onError={onError} />,
         },
         {
             path: "/",
-            element: <RouteComponent controllerMapping={controllerMapping} errorElement={errorElement} />,
+            element: <RouteComponent controllerMapping={controllerMapping} onError={onError} />,
         },
     ]);
 

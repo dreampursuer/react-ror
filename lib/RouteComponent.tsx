@@ -14,10 +14,10 @@ function isInstanced(obj: any) {
 
 interface RouteComponentProps {
     controllerMapping: ControllerMappingType
-    errorElement?: ErrorElementType
+    onError?: ErrorElementType
 }
 
-export function RouteComponent({controllerMapping, errorElement}: RouteComponentProps) {
+export function RouteComponent({controllerMapping, onError}: RouteComponentProps) {
     const params = useParams();
     let controllerName = params.controller;
     if (!controllerName){
@@ -31,8 +31,8 @@ export function RouteComponent({controllerMapping, errorElement}: RouteComponent
     let controller = controllerMapping[controllerName];
     if (!controller){
         const msg = "Not found controller:" + controllerName + " in controllerMapping!"
-        if (errorElement){
-            return errorElement(msg)
+        if (onError){
+            return onError(msg)
         }
         return <ErrorElement msg={msg} />
     }
@@ -44,8 +44,8 @@ export function RouteComponent({controllerMapping, errorElement}: RouteComponent
     const action = controller[actionName];
     if (!action){
         const msg = "Not found action:" + actionName + " in " + controllerName + " controller!"
-        if (errorElement){
-            return errorElement(msg)
+        if (onError){
+            return onError(msg)
         }
         return <ErrorElement msg={msg}/>
     }
