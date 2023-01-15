@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {ControllerMappingType} from "./ReactRorApp";
+import {ControllerMappingType, OnCheckType} from "./ReactRorApp";
 import {ErrorPage, ErrorPageType} from "./ErrorPage";
 import * as React from "react";
 
@@ -15,9 +15,11 @@ function isInstanced(obj: any) {
 interface ControllerProps {
     controllerMapping: ControllerMappingType
     onError?: ErrorPageType
+    onCheck?: OnCheckType
 }
 
-export function Controller({controllerMapping, onError}: ControllerProps) {
+const instanceMap = new Map()
+export function Controller({controllerMapping, onError, onCheck}: ControllerProps) {
     const params = useParams();
     let controllerName = params.controller;
     if (!controllerName){
@@ -28,20 +30,26 @@ export function Controller({controllerMapping, onError}: ControllerProps) {
         actionName = "index";
     }
 
-    let controller = controllerMapping[controllerName];
+    const controller = controllerMapping[controllerName];
     if (!controller){
         const msg = "Not found controller:" + controllerName + " in controllerMapping!"
+
         if (onError){
             return onError(msg)
         }
         return <ErrorPage msg={msg} />
     }
-    if (!isInstanced(controller)){
-        controller = Reflect.construct(controller, [])
-        controllerMapping[controllerName as string] = controller
+    let controllerInstance = controller
+
+    if (!isInstanced(controllerInstance)){
+        controllerInstance = instanceMap.get(controllerName)
+        if (!controllerInstance){
+            controllerInstance = Reflect.construct(controller, [])
+            instanceMap.set(controllerName, controllerInstance)
+        }
     }
 
-    const action = controller[actionName];
+    const action = controllerInstance[actionName];
     if (!action){
         const msg = "Not found action:" + actionName + " in " + controllerName + " controller!"
         if (onError){
@@ -49,5 +57,47 @@ export function Controller({controllerMapping, onError}: ControllerProps) {
         }
         return <ErrorPage msg={msg}/>
     }
+    if (onCheck){
+        if (!canAccess(controller.prototype, actionName)){
+            if (!onCheck({controller:controllerName, action: actionName})){
+                return null
+            }
+        }
+    }
+
     return action();
+}
+
+/**
+ * By default, all action access requires login privileges
+ * If you want to access certain actions without logging in,
+ * you can use the @accessAll annotation in the action method
+ * @param target
+ * @param name
+ * @param descriptor
+ * @returns {any}
+ */
+export function accessAll(target:any, name:any, descriptor:any){
+    let actions = target.accessAllActions
+    if (!actions){
+        actions = new Set()
+        target.accessAllActions = actions
+    }
+    actions.add(name)
+    return descriptor;
+}
+
+/**
+ * Whether the target object can be accessed
+ * @param controller controller class
+ * @param {string} action 操作名
+ * @returns {boolean}
+ */
+function canAccess(controller: any, action: string): boolean {
+    let actions = controller.accessAllActions
+    if (actions && actions.has(action)){
+        return true
+    }
+
+    return false
 }
