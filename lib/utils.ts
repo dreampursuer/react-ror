@@ -65,3 +65,33 @@ function buildParams(params: any, nameMap?: any){
     }
     return "";
 }
+
+type paramsType = {
+    [key:string]:any
+}
+/**
+ * let link = createLink("book", "list", {
+ *     category: "science",
+ *     author: "Stephen Hawking"
+ * });
+ * console.log(link);
+ * // Output: "#/book/list?category=science&author=Stephen%20Hawking"
+ * @param controller
+ * @param action
+ * @param params
+ */
+export function createLink(controller: string, action: string, params?: paramsType) {
+    let link = `#/${controller}/${action}`;
+    let queryParams = "";
+    for (let key in params) {
+        if (params.hasOwnProperty(key)) {
+            if (queryParams.length == 0) {
+                queryParams += "?";
+            } else {
+                queryParams += "&";
+            }
+            queryParams += key + "=" + params[key];
+        }
+    }
+    return link + queryParams;
+}
