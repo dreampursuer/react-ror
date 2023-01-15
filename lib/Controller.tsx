@@ -1,6 +1,5 @@
 import {useParams} from "react-router-dom";
 import {ControllerMappingType, OnCheckType} from "./ReactRorApp";
-import {ErrorPage, ErrorPageType} from "./ErrorPage";
 import * as React from "react";
 
 
@@ -14,12 +13,11 @@ function isInstanced(obj: any) {
 
 interface ControllerProps {
     controllerMapping: ControllerMappingType
-    onError?: ErrorPageType
     onCheck?: OnCheckType
 }
 
 const instanceMap = new Map()
-export function Controller({controllerMapping, onError, onCheck}: ControllerProps) {
+export function Controller({controllerMapping, onCheck}: ControllerProps) {
     const params = useParams();
     let controllerName = params.controller;
     if (!controllerName){
@@ -33,11 +31,7 @@ export function Controller({controllerMapping, onError, onCheck}: ControllerProp
     const controller = controllerMapping[controllerName];
     if (!controller){
         const msg = "Not found controller:" + controllerName + " in controllerMapping!"
-
-        if (onError){
-            return onError(msg)
-        }
-        return <ErrorPage msg={msg} />
+        throw new Response(msg, { status: 404, statusText:msg });
     }
     let controllerInstance = controller
 
@@ -52,10 +46,7 @@ export function Controller({controllerMapping, onError, onCheck}: ControllerProp
     const action = controllerInstance[actionName];
     if (!action){
         const msg = "Not found action:" + actionName + " in " + controllerName + " controller!"
-        if (onError){
-            return onError(msg)
-        }
-        return <ErrorPage msg={msg}/>
+        throw new Response(msg, { status: 404, statusText:msg });
     }
     if (onCheck){
         if (!canAccess(controller.prototype, actionName)){

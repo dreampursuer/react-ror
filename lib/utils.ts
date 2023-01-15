@@ -4,7 +4,7 @@
  * @param {string} action
  * @param params
  */
-export function redirect(controller: string, action: string, params?: any){
+export function redirectTo(controller: string, action: string, params?: any){
     let url = buildUrl(controller, action, params)
     const newHref = '#' + url
     const currentHref = window.location.hash
