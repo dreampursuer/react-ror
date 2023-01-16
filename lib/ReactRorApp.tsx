@@ -13,17 +13,17 @@ export type LayoutMappingType = {
     [key: string]: any
 }
 
-export type OnCheckType = (params?:any)=>boolean;
+export type AccessCheckType = (params?:any)=>boolean;
 
 interface ReactRorAppProps{
     controllerMapping: ControllerMappingType
     layoutMapping: LayoutMappingType
     errorPage?: ReactElement
     router?: RemixRouter
-    onCheck?: OnCheckType
+    accessCheck?: AccessCheckType
 }
 
-export default function ReactRorApp({controllerMapping, router, errorPage, layoutMapping, onCheck}: ReactRorAppProps){
+export default function ReactRorApp({controllerMapping, router, errorPage, layoutMapping, accessCheck}: ReactRorAppProps){
     let rt = router
     if (!rt){
         let errorElement = <ErrorPage />;
@@ -37,7 +37,7 @@ export default function ReactRorApp({controllerMapping, router, errorPage, layou
                 children:[
                     {
                         path: "/:controller?/:action?/:id?",
-                        element: <Controller controllerMapping={controllerMapping} onCheck={onCheck} />,
+                        element: <Controller controllerMapping={controllerMapping} accessCheck={accessCheck} />,
                     },
                 ]
             },

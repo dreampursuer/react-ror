@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {ControllerMappingType, OnCheckType} from "./ReactRorApp";
+import {ControllerMappingType, AccessCheckType} from "./ReactRorApp";
 import * as React from "react";
 
 
@@ -13,11 +13,11 @@ function isInstanced(obj: any) {
 
 interface ControllerProps {
     controllerMapping: ControllerMappingType
-    onCheck?: OnCheckType
+    accessCheck?: AccessCheckType
 }
 
 const instanceMap = new Map()
-export function Controller({controllerMapping, onCheck}: ControllerProps) {
+export function Controller({controllerMapping, accessCheck}: ControllerProps) {
     const params = useParams();
     let controllerName = params.controller;
     if (!controllerName){
@@ -48,9 +48,9 @@ export function Controller({controllerMapping, onCheck}: ControllerProps) {
         const msg = "Not found action:" + actionName + " in " + controllerName + " controller!"
         throw new Response(msg, { status: 404, statusText:msg });
     }
-    if (onCheck){
+    if (accessCheck){
         if (!canAccess(controller.prototype, actionName)){
-            if (!onCheck({controller:controllerName, action: actionName})){
+            if (!accessCheck({controller:controllerName, action: actionName})){
                 return null
             }
         }
