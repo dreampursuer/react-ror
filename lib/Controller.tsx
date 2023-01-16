@@ -62,17 +62,17 @@ export function Controller({controllerMapping, accessCheck}: ControllerProps) {
 /**
  * By default, all action access requires login privileges
  * If you want to access certain actions without logging in,
- * you can use the @accessAll annotation in the action method
+ * you can use the @skipAccessCheck annotation in the action method
  * @param target
  * @param name
  * @param descriptor
  * @returns {any}
  */
-export function accessAll(target:any, name:any, descriptor:any){
-    let actions = target.accessAllActions
+export function skipAccessCheck(target:any, name:any, descriptor:any){
+    let actions = target.skipAccessChecks
     if (!actions){
         actions = new Set()
-        target.accessAllActions = actions
+        target.skipAccessChecks = actions
     }
     actions.add(name)
     return descriptor;
@@ -85,7 +85,7 @@ export function accessAll(target:any, name:any, descriptor:any){
  * @returns {boolean}
  */
 function canAccess(controller: any, action: string): boolean {
-    let actions = controller.accessAllActions
+    let actions = controller.skipAccessChecks
     if (actions && actions.has(action)){
         return true
     }

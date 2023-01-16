@@ -5,4 +5,4 @@ export {
 }
 
 export {redirectTo, createLink} from "./lib/utils";
-export {accessAll} from "./lib/Controller";
+export {skipAccessCheck} from "./lib/Controller";
