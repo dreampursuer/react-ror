@@ -150,7 +150,7 @@ accessCheck：Used for access checking. If not set then access checking is not e
 
 The default mapping rules for paths in react-ror are as follows:
 
-```json
+```
 /:controller?/:action?/:id?
 ```
 
@@ -164,15 +164,15 @@ The APIs related to path navigation and parameter extraction are：
 
 - createLink(controller, action, params): Create link. e.g.: createLink('user', 'index') => #/user/index, Preceded by # for direct use in the url.
 
-- [useNavigate]([useNavigate v6.6.2 | React Router](https://reactrouter.com/en/main/hooks/use-navigate))：The hook function in react-router can be used to navigate to the specified URL.
+- [useNavigate](https://reactrouter.com/en/main/hooks/use-navigate)：The hook function in react-router can be used to navigate to the specified URL.
 
-- [useParams]([useParams v6.6.2 | React Router](https://reactrouter.com/en/main/hooks/use-params))：Getting the matching parameters in the URL, contains controller,action and id
+- [useParams](https://reactrouter.com/en/main/hooks/use-params)：Getting the matching parameters in the URL, contains controller,action and id
 
-- [useSearchParams]([useSearchParams v6.6.2 | React Router](https://reactrouter.com/en/main/hooks/use-search-params))：Get the query parameters in the URL
+- [useSearchParams](https://reactrouter.com/en/main/hooks/use-search-params)：Get the query parameters in the URL
 
 ### Layout Management
 
-The layout file is saved in the views/layout directory, and the part to be exported is defined using `[<Outlet />`]([Outlet v6.6.2 | React Router](https://reactrouter.com/en/main/components/ outlet)) to define it.
+The layout file is saved in the views/layout directory, and the part to be exported is defined using `[<Outlet />`](https://reactrouter.com/en/main/components/outlet) to define it.
 
 The mapping for layout is defined in conf/ApplicationConfig.ts:
 

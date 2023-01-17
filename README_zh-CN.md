@@ -152,7 +152,7 @@ accessCheck：用于访问检查。如果不设置则不启用访问检查，这
 
 react-ror中对路径的默认映射规则如下：
 
-```json
+```
 /:controller?/:action?/:id?
 ```
 
@@ -166,15 +166,15 @@ react-ror中对路径的默认映射规则如下：
 
 - createLink(controller, action, params): 创建link，例如：createLink('user', 'index') => #/user/index， 前面加了#便于直接用在url中。
 
-- [useNavigate]([useNavigate v6.6.2 | React Router](https://reactrouter.com/en/main/hooks/use-navigate))：react-router中的hook函数，可以用于导航到指定URL中。
+- [useNavigate](https://reactrouter.com/en/main/hooks/use-navigate)：react-router中的hook函数，可以用于导航到指定URL中。
 
-- [useParams]([useParams v6.6.2 | React Router](https://reactrouter.com/en/main/hooks/use-params))：获取URL中的匹配参数，主要是controller,action和id
+- [useParams](https://reactrouter.com/en/main/hooks/use-params)：获取URL中的匹配参数，主要是controller,action和id
 
-- [useSearchParams]([useSearchParams v6.6.2 | React Router](https://reactrouter.com/en/main/hooks/use-search-params))：获得URL中的查询参数
+- [useSearchParams](https://reactrouter.com/en/main/hooks/use-search-params)：获得URL中的查询参数
 
 ### 布局管理
 
-布局文件保存在views/layout目录下，要输出的部分用react-router中的`[<Outlet />`]([Outlet v6.6.2 | React Router](https://reactrouter.com/en/main/components/outlet))来定义。
+布局文件保存在views/layout目录下，要输出的部分用react-router中的`[<Outlet />`](https://reactrouter.com/en/main/components/outlet)来定义。
 
 layout的映射定义在conf/ApplicationConfig.ts中：
 
