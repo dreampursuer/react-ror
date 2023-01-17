@@ -1,6 +1,7 @@
-import {useParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {ControllerMappingType, AccessCheckType} from "./ReactRorApp";
 import * as React from "react";
+import {ParamsType} from "./utils";
 
 
 function isInstanced(obj: any) {
@@ -18,15 +19,16 @@ interface ControllerProps {
 
 const instanceMap = new Map()
 export function Controller({controllerMapping, accessCheck}: ControllerProps) {
-    const params = useParams();
-    let controllerName = params.controller;
-    if (!controllerName){
-        controllerName = "main";
+    const rawParams = useParams();
+    let params: ParamsType = {};
+    for (let rawParamsKey in rawParams) {
+        params[rawParamsKey] = rawParams[rawParamsKey]
     }
-    let actionName = params.action;
-    if (!actionName){
-        actionName = "index";
-    }
+    const [searchParams] = useSearchParams();
+    params.controller = params.controller || "main";
+    params.action = params.action || "index";
+    const controllerName = params.controller
+    const  actionName = params.action
 
     const controller = controllerMapping[controllerName];
     if (!controller){
@@ -48,15 +50,27 @@ export function Controller({controllerMapping, accessCheck}: ControllerProps) {
         const msg = "Not found action:" + actionName + " in " + controllerName + " controller!"
         throw new Response(msg, { status: 404, statusText:msg });
     }
+
+    searchParams.forEach((value, key) => {
+        if(params[key]){
+            if(!Array.isArray(params[key])){
+                params[key] = [params[key]]
+            }
+            params[key].push(value)
+        }else {
+            params[key] = value
+        }
+    });
+
     if (accessCheck){
         if (!canAccess(controller.prototype, actionName)){
-            if (!accessCheck({controller:controllerName, action: actionName})){
-                return null
+            if (!accessCheck(params)){
+                return <></>
             }
         }
     }
 
-    return action();
+    return action(params);
 }
 
 /**

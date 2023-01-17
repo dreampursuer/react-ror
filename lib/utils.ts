@@ -66,7 +66,7 @@ function buildParams(params: any, nameMap?: any){
     return "";
 }
 
-type paramsType = {
+export type ParamsType = {
     [key:string]:any
 }
 /**
@@ -80,7 +80,7 @@ type paramsType = {
  * @param action
  * @param params
  */
-export function createLink(controller: string, action: string, params?: paramsType) {
+export function createLink(controller: string, action: string, params?: ParamsType) {
     let link = `#/${controller}/${action}`;
     let queryParams = "";
     for (let key in params) {
@@ -94,4 +94,48 @@ export function createLink(controller: string, action: string, params?: paramsTy
         }
     }
     return link + queryParams;
+}
+
+
+/**
+ * The basic URL pattern here is: /:controller?/:action?/:id?, that is, at most 3 sections in the URL, the first two sections are: controller and action, and the last section is id, while in the URL will be with the query string, the following are a few test cases.
+ * /user/show => {controller:'user', action:'show'}
+ * /user/show/12121 => {controller:'user', action:'show', id:12121}
+ * /user/show?k1=v1&k2=v2 => {controller:'user', action:'show', params:{k1:v1, k2:v2}}
+ * /user/show?k1=v11&k2=v2&k1=v12 => {controller:'user', action:'show', params:{k1:[v11, v12], k2:v2}}
+ * @param url
+ */
+export function parseLocation(): ParamsType {
+    let url = window.location.hash
+    if (url.startsWith("#")){
+        url = url.substring(1)
+    }
+    const [path, query] = url.split("?");
+    const parts = path.split("/").filter(p => p !== "");
+    let result:ParamsType = {};
+    if (parts.length > 0) {
+        result.controller = parts[0];
+    }
+    if (parts.length > 1) {
+        result.action = parts[1];
+    }
+    if (parts.length > 2) {
+        result.id = parts[2];
+    }
+    if (query) {
+        const params: ParamsType = {};
+        query.split("&").forEach(p => {
+            const [key, value] = p.split("=");
+            if(params[key]){
+                if(!Array.isArray(params[key])){
+                    params[key] = [params[key]]
+                }
+                params[key].push(value)
+            }else {
+                params[key] = value
+            }
+        });
+        result.params = params;
+    }
+    return result;
 }
