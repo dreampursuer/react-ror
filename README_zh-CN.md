@@ -174,7 +174,7 @@ react-ror中对路径的默认映射规则如下：
 
 ### 布局管理
 
-布局文件保存在views/layout目录下，要输出的部分用react-router中的`[<Outlet />`](https://reactrouter.com/en/main/components/outlet)来定义。
+布局文件保存在views/layout目录下，要输出的部分用react-router中的[`<Outlet />`](https://reactrouter.com/en/main/components/outlet)来定义。
 
 layout的映射定义在conf/ApplicationConfig.ts中：
 

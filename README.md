@@ -172,7 +172,7 @@ The APIs related to path navigation and parameter extraction are：
 
 ### Layout Management
 
-The layout file is saved in the views/layout directory, and the part to be exported is defined using `[<Outlet />`](https://reactrouter.com/en/main/components/outlet) to define it.
+The layout file is saved in the views/layout directory, and the part to be exported is defined using [`<Outlet />`](https://reactrouter.com/en/main/components/outlet) to define it.
 
 The mapping for layout is defined in conf/ApplicationConfig.ts:
 
