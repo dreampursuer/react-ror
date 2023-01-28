@@ -10,9 +10,9 @@ For example:
 /user/login
 ```
 
-Where 'user' is the controller, the implementation is: 'UserController'.
-'login' is an action, corresponding to the login method in the UserController.
-See the section on 'Path Mapping' later for more details.
+Where `user` is the controller, the implementation is: `UserController`.
+`login` is an action, corresponding to the login method in the UserController.
+See the section on Path Mapping later for more details.
 
 Read this in other languages: English | [简体中文](README_zh-CN.md)
 
@@ -40,16 +40,6 @@ or
 
 ```shell
 yarn create react-app my-app --template react-ror
-```
-
-After installation, you need to manually modify tsconfig.json to set `experimentalDecorators` to true to support decorator:
-
-```json
-{
-    "compilerOptions": {
-        "experimentalDecorators": true
-    }
-}
 ```
 
 Then run:
@@ -126,10 +116,8 @@ If a component can be shared by other views, it can be stored in the components 
 It is recommended that `ReactRorApp` be called in the application entry:
 
 ```jsx
-<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} />
+<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} skipAccessCheck={skipAccessCheck} />Of which：
 ```
-
-Of which：
 
 controllerMapping：Defines the mapping of the controller name part of the path to the controller class, e.g.:
 
@@ -145,6 +133,8 @@ The above instructs that the action in MainController is called when /main is ac
 layoutMapping：Defines the mapping between the name of the layout and the layout view
 
 accessCheck：Used for access checking. If not set then access checking is not enabled, this means that all pages can be accessed.
+
+skipAccessCheck: used to skip the access check of some paths, for example, if you want to skip the access check of the login action, you can set in it: /user/login
 
 ### Path Mapping
 
@@ -199,11 +189,10 @@ export function AccessCheck(params?: any){
 }
 ```
 
-You can use @skipAccessCheck if you don't want to do access checking for an action, e.g.:
+You can define `skipAccessCheck` if you don't need to do access checking for the action, for example, if you don't want to do access checking on the login action, you can use the following definition:
 
 ```javascript
-    @skipAccessCheck
-    public login(){
-        return <Login />
-    }
+export const skipAccessCheck = ["/user/login"]
 ```
+
+The pattern in skipAccessCheck is: /controller/action

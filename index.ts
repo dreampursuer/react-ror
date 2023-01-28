@@ -6,4 +6,3 @@ export {
 
 export {redirectTo, createLink, parseLocation} from "./lib/utils";
 export type {ParamsType} from "./lib/utils";
-export {skipAccessCheck} from "./lib/Controller";

@@ -15,10 +15,11 @@ function isInstanced(obj: any) {
 interface ControllerProps {
     controllerMapping: ControllerMappingType
     accessCheck?: AccessCheckType
+    skipAccessCheck?: string[]
 }
 
 const instanceMap = new Map()
-export function Controller({controllerMapping, accessCheck}: ControllerProps) {
+export function Controller({controllerMapping, accessCheck, skipAccessCheck}: ControllerProps) {
     const rawParams = useParams();
     let params: ParamsType = {};
     for (let rawParamsKey in rawParams) {
@@ -63,7 +64,7 @@ export function Controller({controllerMapping, accessCheck}: ControllerProps) {
     });
 
     if (accessCheck){
-        if (!canAccess(controller.prototype, actionName)){
+        if (skipAccessCheck && !canAccess(skipAccessCheck, controllerName, actionName)){
             if (!accessCheck(params)){
                 return <></>
             }
@@ -74,35 +75,11 @@ export function Controller({controllerMapping, accessCheck}: ControllerProps) {
 }
 
 /**
- * By default, all action access requires login privileges
- * If you want to access certain actions without logging in,
- * you can use the @skipAccessCheck annotation in the action method
- * @param target
- * @param name
- * @param descriptor
- * @returns {any}
- */
-export function skipAccessCheck(target:any, name:any, descriptor:any){
-    let actions = target.skipAccessChecks
-    if (!actions){
-        actions = new Set()
-        target.skipAccessChecks = actions
-    }
-    actions.add(name)
-    return descriptor;
-}
-
-/**
  * Whether the target object can be accessed
- * @param controller controller class
- * @param {string} action 操作名
- * @returns {boolean}
+ * @param skipAccessCheck
+ * @param controller
+ * @param action
  */
-function canAccess(controller: any, action: string): boolean {
-    let actions = controller.skipAccessChecks
-    if (actions && actions.has(action)){
-        return true
-    }
-
-    return false
+function canAccess(skipAccessCheck: string[], controller: string, action: string): boolean {
+    return skipAccessCheck.includes("/" + controller + "/" + action)
 }

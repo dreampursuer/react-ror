@@ -10,7 +10,7 @@ react-ror采用Rails/Grails等基于约定优于配置的理念，使用Controll
 /user/login
 ```
 
-其中user为controller，具体的实现为：UserController
+其中`user`为`controller`，具体的实现为：`UserController`
 
 login为action，对应到UserController中的login方法
 
@@ -42,16 +42,6 @@ npx create-react-app my-app --template react-ror
 
 ```shell
 yarn create react-app my-app --template react-ror
-```
-
-安装完成后还需要手工修改下tsconfig.json，把`experimentalDecorators`设置为true以支持decorator:
-
-```json
-{
-    "compilerOptions": {
-        "experimentalDecorators": true
-    }
-}
 ```
 
 然后运行：
@@ -128,10 +118,8 @@ domain目录下保存了各种实体对象。
 建议在应用程序入口中直接调用`ReactRorApp`，调用方式如下：
 
 ```jsx
-<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} />
+<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} skipAccessCheck={skipAccessCheck} />其中：
 ```
-
-其中：
 
 controllerMapping：定义了controller名字同路径上controller部分的对应关系，例如：
 
@@ -147,6 +135,8 @@ export const controllerMapping = {
 layoutMapping：定义了布局的名字和实际布局之间的映射关系
 
 accessCheck：用于访问检查。如果不设置则不启用访问检查，这意味着所有的页面都能被访问。
+
+skipAccessCheck：用于跳过某些path的访问检查，例如，如果想要跳过对登录页面的访问检查，则可以在其中设置：/user/login
 
 ### 路径映射
 
@@ -201,11 +191,10 @@ export function AccessCheck(params?: any){
 }
 ```
 
-对于某action不需要进行访问权限检查的话可以使用@skipAccessCheck，例如：
+对于某action不需要进行访问权限检查的话可以定义skipAccessCheck，例如，不想对登录页面进行访问检查，则可以使用如下定义：
 
 ```javascript
-    @skipAccessCheck
-    public login(){
-        return <Login />
-    }
+export const skipAccessCheck = ["/user/login"]
 ```
+
+skipAccessCheck中的格式为：/controller/action

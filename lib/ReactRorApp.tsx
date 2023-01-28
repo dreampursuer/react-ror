@@ -21,9 +21,10 @@ interface ReactRorAppProps{
     errorPage?: ReactElement
     router?: RemixRouter
     accessCheck?: AccessCheckType
+    skipAccessCheck?: string[]
 }
 
-export default function ReactRorApp({controllerMapping, router, errorPage, layoutMapping, accessCheck}: ReactRorAppProps){
+export default function ReactRorApp({controllerMapping, router, errorPage, layoutMapping, accessCheck, skipAccessCheck}: ReactRorAppProps){
     let rt = router
     if (!rt){
         let errorElement = <ErrorPage />;
@@ -37,7 +38,7 @@ export default function ReactRorApp({controllerMapping, router, errorPage, layou
                 children:[
                     {
                         path: "/:controller?/:action?/:id?",
-                        element: <Controller controllerMapping={controllerMapping} accessCheck={accessCheck} />,
+                        element: <Controller controllerMapping={controllerMapping} accessCheck={accessCheck} skipAccessCheck={skipAccessCheck}/>,
                     },
                 ]
             },
