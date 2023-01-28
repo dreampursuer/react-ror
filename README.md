@@ -116,7 +116,7 @@ If a component can be shared by other views, it can be stored in the components 
 It is recommended that `ReactRorApp` be called in the application entry:
 
 ```jsx
-<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} skipAccessCheck={skipAccessCheck} />Of which：
+<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} skipAccessCheck={skipAccessCheck} />
 ```
 
 controllerMapping：Defines the mapping of the controller name part of the path to the controller class, e.g.:

@@ -118,9 +118,10 @@ domain目录下保存了各种实体对象。
 建议在应用程序入口中直接调用`ReactRorApp`，调用方式如下：
 
 ```jsx
-<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} skipAccessCheck={skipAccessCheck} />其中：
+<ReactRorApp controllerMapping={controllerMapping} layoutMapping={layoutMapping} accessCheck={AccessCheck} skipAccessCheck={skipAccessCheck} />
 ```
 
+其中：
 controllerMapping：定义了controller名字同路径上controller部分的对应关系，例如：
 
 ```typescript
