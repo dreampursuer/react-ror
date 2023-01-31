@@ -18,7 +18,7 @@ export function redirectTo(controller: string, action: string, params?: any){
 }
 
 /**
- * build url by controller/action/params
+ * build url by /controller/action/params
  * @param {string} controller
  * @param {string} action
  * @param params Map
@@ -138,4 +138,53 @@ export function parseLocation(): ParamsType {
         result.params = params;
     }
     return result;
+}
+
+type OptionsType = {
+    apiRoot?: string
+    method?: 'get'|'post'
+    [key:string]:any
+}
+
+/**
+ * Fetch data from remote service
+ * Assume the remote service follows controller/action naming pattern.
+ *
+ * @param controller
+ * @param action
+ * @param params
+ * @param options
+ */
+export async function fetchData(controller: string, action: string, params?: ParamsType, options?: OptionsType){
+    let apiRoot = options?.apiRoot
+    if (!apiRoot){
+        apiRoot = ""
+    }
+
+    let method = options?.method
+    if (!method){
+        method = "get"
+    }
+    if (method === 'get'){
+        let url = apiRoot + buildUrl(controller, action, params);
+        console.debug("url:", url)
+        let ret: any = await fetch(url, {mode: 'cors', credentials: 'include'})
+        ret = await ret.json()
+        return ret
+    }
+    else{
+        const url = apiRoot + buildUrl(controller, action)
+        console.debug("url:", url)
+        let strParams = buildParams(params)
+        let ret = await fetch(url, {
+            mode: 'cors', credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: strParams
+        });
+        ret = await ret.json();
+        return ret
+    }
 }

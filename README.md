@@ -196,3 +196,7 @@ export const skipAccessCheck = ["/user/login"]
 ```
 
 The pattern in skipAccessCheck is: /controller/action
+
+### Fetch data from remote services
+
+Use `fetchData` to get data from a remote server, where this remote service follows the controller/action pattern.

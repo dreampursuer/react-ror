@@ -199,3 +199,7 @@ export const skipAccessCheck = ["/user/login"]
 ```
 
 skipAccessCheck中的格式为：/controller/action
+
+### 从远程服务获取数据
+
+使用`fetchData`来从远程服务器中获得数据，其中此远程服务遵循controller/action的模式。

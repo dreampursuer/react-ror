@@ -4,5 +4,5 @@ export {
     ReactRorApp,
 }
 
-export {redirectTo, createLink, parseLocation} from "./lib/utils";
+export {redirectTo, createLink, parseLocation, fetchData} from "./lib/utils";
 export type {ParamsType} from "./lib/utils";
