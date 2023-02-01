@@ -70,18 +70,21 @@ export type ParamsType = {
     [key:string]:any
 }
 /**
- * let link = createLink("book", "list", {
+ * let link = createLink({controller:"book", action:"list", params:{
  *     category: "science",
  *     author: "Stephen Hawking"
- * });
+ * }});
  * console.log(link);
  * // Output: "#/book/list?category=science&author=Stephen%20Hawking"
  * @param controller
  * @param action
  * @param params
  */
-export function createLink(controller: string, action: string, params?: ParamsType) {
+export function createLink({controller, action, id, params}: {controller:string, action: string, id?:any, params?:ParamsType}) {
     let link = `#/${controller}/${action}`;
+    if (id){
+        link = link + "/" + id
+    }
     let queryParams = "";
     for (let key in params) {
         if (params.hasOwnProperty(key)) {
@@ -168,7 +171,7 @@ export async function fetchData(controller: string, action: string, params?: Par
     if (method === 'get'){
         let url = apiRoot + buildUrl(controller, action, params);
         console.debug("url:", url)
-        let ret: any = await fetch(url, {mode: 'cors', credentials: 'include'})
+        let ret: any = await fetch(url)
         ret = await ret.json()
         return ret
     }
@@ -177,7 +180,6 @@ export async function fetchData(controller: string, action: string, params?: Par
         console.debug("url:", url)
         let strParams = buildParams(params)
         let ret = await fetch(url, {
-            mode: 'cors', credentials: 'include',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
