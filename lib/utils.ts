@@ -155,7 +155,7 @@ type OptionsType = {
  * @param params
  * @param options
  */
-export async function fetchData(controller: string, action: string, params?: ParamsType, options?: OptionsType){
+export async function fetchData(controller: string, action: string, params?: ParamsType|null, options?: OptionsType|null){
     let apiRoot = options?.apiRoot
     if (!apiRoot){
         apiRoot = ""
