@@ -80,15 +80,18 @@ export type ParamsType = {
  * @param action
  * @param params
  */
-export function createLink({controller, action, id, params}: {controller:string, action: string, id?:any, params?:ParamsType}) {
-    let link = `#/${controller}/${action}`;
+export function createLink({controller, action, id, params, noHash}: {controller:string, action: string, id?:any, params?:ParamsType, noHash?:boolean}) {
+    let link = `/${controller}/${action}`
+    if (!noHash){
+        link = "#" + link
+    }
     if (id){
         link = link + "/" + id
     }
     let queryParams = "";
     for (let key in params) {
         if (params.hasOwnProperty(key)) {
-            if (queryParams.length == 0) {
+            if (queryParams.length === 0) {
                 queryParams += "?";
             } else {
                 queryParams += "&";
