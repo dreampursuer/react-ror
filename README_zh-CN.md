@@ -203,3 +203,97 @@ skipAccessCheck中的格式为：/controller/action
 ### 从远程服务获取数据
 
 使用`fetchData`来从远程服务器中获得数据，其中此远程服务遵循controller/action的模式。
+
+### 参数使用
+
+以下是关于如何使用参数的示例，我们将以显示用户ID为1234为例：
+
+URL为：user/show/1234
+
+controller：user，action：show，id：1234
+
+您可以使用以下两种方式来获取URL参数：
+
+一种是使用useParams钩子函数获取参数，另一种是通过action传递参数获取。
+
+#### 使用useParams钩子函数获取参数
+
+`controllers/UserController.tsx`
+
+```typescript
+export class UserController{
+    public show(){
+        return <Show />
+    }
+}
+```
+
+`views/user/show.tsx`
+
+```typescript
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {userService} from "../../services/UserService";
+import {User} from "../../domain/User";
+
+export function Show(){
+    const params = useParams();
+    const id = params.id
+    let [user, setUser] = useState<User | null>(null)
+    useEffect(()=> {
+        const loadData = async () => {
+            if (id){
+                const data = await userService.findById(id)
+                setRecord(data)
+            }
+        }
+
+        loadData()
+    }, [id])
+
+    return <div>show user:{user?.id}</div>
+}
+```
+
+上面显示的例子中核心关键是用userParams()来获得URL中的参数。
+
+
+
+#### 通过action传递参数
+
+controllers/UserController.tsx`
+
+```typescript
+export class UserController{
+    public show(params: ParamsType){
+        return <Show params={params} />
+    }
+}
+```
+
+`views/user/show.tsx`
+
+```typescript
+import {useEffect, useState} from "react";
+import {userService} from "../../services/UserService";
+import {User} from "../../domain/User";
+
+export function Show({params}: ParamsType){
+    const id = params.id
+    let [user, setUser] = useState<User | null>(null)
+    useEffect(()=> {
+        const loadData = async () => {
+            if (id){
+                const data = await userService.findById(id)
+                setRecord(data)
+            }
+        }
+
+        loadData()
+    }, [id])
+
+    return <div>show user:{user?.id}</div>
+}
+```
+
+这种方法的核心关键是只要在UserController.show方法中传递params参数就可以。
